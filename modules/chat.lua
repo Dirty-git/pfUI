@@ -1,4 +1,4 @@
-pfUI:RegisterModule("chat", "vanilla:tbc", function ()
+pfUI:RegisterModule("chat", "vanilla:tbc", function()
   local panelfont = C.panel.use_unitfonts == "1" and pfUI.font_unit or pfUI.font_default
   local panelfont_size = C.panel.use_unitfonts == "1" and C.global.font_unit_size or C.global.font_size
   local rawborder, default_border = GetBorderSize("chat")
@@ -20,9 +20,9 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
   -- add dropdown menu button to ignore player
   UnitPopupButtons["IGNORE_PLAYER"] = { text = IGNORE_PLAYER, dist = 0 }
-  for index,value in ipairs(UnitPopupMenus["FRIEND"]) do
+  for index, value in ipairs(UnitPopupMenus["FRIEND"]) do
     if value == "GUILD_LEAVE" then
-      table.insert(UnitPopupMenus["FRIEND"], index+1, "IGNORE_PLAYER")
+      table.insert(UnitPopupMenus["FRIEND"], index + 1, "IGNORE_PLAYER")
     end
   end
 
@@ -44,7 +44,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     pfUI_cache["chathistory"][realm][player][id] = pfUI_cache["chathistory"][realm][player][id] or {}
 
     if r and g and b then
-      local color = rgbhex(r*.5+.2, g*.5+.2, b*.5+.2)
+      local color = rgbhex(r * .5 + .2, g * .5 + .2, b * .5 + .2)
       msg = string.gsub(msg, "^", color)
       msg = string.gsub(msg, "|r", "|r" .. color)
     end
@@ -65,7 +65,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     return pfUI_cache["chathistory"][realm][player][id]
   end
 
-  pfUI.chat = CreateFrame("Frame",nil,UIParent)
+  pfUI.chat = CreateFrame("Frame", nil, UIParent)
 
   pfUI.chat.left = CreateFrame("Frame", "pfChatLeft", UIParent)
   pfUI.chat.left.OnMove = function()
@@ -75,7 +75,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   pfUI.chat.left:SetFrameStrata("BACKGROUND")
   pfUI.chat.left:SetWidth(C.chat.left.width)
   pfUI.chat.left:SetHeight(C.chat.left.height)
-  pfUI.chat.left:SetPoint("BOTTOMLEFT", 2*default_border,2*default_border)
+  pfUI.chat.left:SetPoint("BOTTOMLEFT", 2 * default_border, 2 * default_border)
   pfUI.chat.left:SetScript("OnShow", function() pfUI.chat:RefreshChat() end)
   UpdateMovable(pfUI.chat.left)
   CreateBackdrop(pfUI.chat.left, default_border, nil, .8)
@@ -93,7 +93,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
   pfUI.chat.left.panelTop = CreateFrame("Frame", "leftChatPanelTop", pfUI.chat.left)
   pfUI.chat.left.panelTop:ClearAllPoints()
-  pfUI.chat.left.panelTop:SetHeight(C.global.font_size+default_border*2)
+  pfUI.chat.left.panelTop:SetHeight(C.global.font_size + default_border * 2)
   pfUI.chat.left.panelTop:SetPoint("TOPLEFT", pfUI.chat.left, "TOPLEFT", default_border, -default_border)
   pfUI.chat.left.panelTop:SetPoint("TOPRIGHT", pfUI.chat.left, "TOPRIGHT", -default_border, -default_border)
   if C.chat.global.tabdock == "1" then
@@ -102,50 +102,61 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
   pfUI.chat.URLPattern = {
     WWW = {
-      ["rx"]=" (www%d-)%.([_A-Za-z0-9-]+)%.(%S+)%s?",
-      ["fm"]="%s.%s.%s"},
+      ["rx"] = " (www%d-)%.([_A-Za-z0-9-]+)%.(%S+)%s?",
+      ["fm"] = "%s.%s.%s"
+    },
     PROTOCOL = {
-      ["rx"]=" (%a+)://(%S+)%s?",
-      ["fm"]="%s://%s"},
+      ["rx"] = " (%a+)://(%S+)%s?",
+      ["fm"] = "%s://%s"
+    },
     EMAIL = {
-      ["rx"]=" ([_A-Za-z0-9-%.:]+)@([_A-Za-z0-9-]+)(%.)([_A-Za-z0-9-]+%.?[_A-Za-z0-9-]*)%s?",
-      ["fm"]="%s@%s%s%s"},
+      ["rx"] = " ([_A-Za-z0-9-%.:]+)@([_A-Za-z0-9-]+)(%.)([_A-Za-z0-9-]+%.?[_A-Za-z0-9-]*)%s?",
+      ["fm"] = "%s@%s%s%s"
+    },
     PORTIP = {
-      ["rx"]=" (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?",
-      ["fm"]="%s.%s.%s.%s:%s"},
+      ["rx"] = " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?",
+      ["fm"] = "%s.%s.%s.%s:%s"
+    },
     IP = {
-      ["rx"]=" (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?",
-      ["fm"]="%s.%s.%s.%s"},
+      ["rx"] = " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?",
+      ["fm"] = "%s.%s.%s.%s"
+    },
     SHORTURL = {
-      ["rx"]=" (%a+)%.(%a+)/(%S+)%s?",
-      ["fm"]="%s.%s/%s"},
+      ["rx"] = " (%a+)%.(%a+)/(%S+)%s?",
+      ["fm"] = "%s.%s/%s"
+    },
     URLIP = {
-      ["rx"]=" ([_A-Za-z0-9-]+)%.([_A-Za-z0-9-]+)%.(%S+)%:([_0-9-]+)%s?",
-      ["fm"]="%s.%s.%s:%s"},
+      ["rx"] = " ([_A-Za-z0-9-]+)%.([_A-Za-z0-9-]+)%.(%S+)%:([_0-9-]+)%s?",
+      ["fm"] = "%s.%s.%s:%s"
+    },
     URL = {
-      ["rx"]=" ([_A-Za-z0-9-]+)%.([_A-Za-z0-9-]+)%.(%S+)%s?",
-      ["fm"]="%s.%s.%s"},
+      ["rx"] = " ([_A-Za-z0-9-]+)%.([_A-Za-z0-9-]+)%.(%S+)%s?",
+      ["fm"] = "%s.%s.%s"
+    },
   }
 
   pfUI.chat.URLFuncs = {
-    ["WWW"] = function(a1,a2,a3) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.WWW.fm,a1,a2,a3) end,
-    ["PROTOCOL"] = function(a1,a2) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.PROTOCOL.fm,a1,a2) end,
-    ["EMAIL"] = function(a1,a2,a3,a4) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.EMAIL.fm,a1,a2,a3,a4) end,
-    ["PORTIP"] = function(a1,a2,a3,a4,a5) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.PORTIP.fm,a1,a2,a3,a4,a5) end,
-    ["IP"] = function(a1,a2,a3,a4) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.IP.fm,a1,a2,a3,a4) end,
-    ["SHORTURL"] = function(a1,a2,a3) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.SHORTURL.fm,a1,a2,a3) end,
-    ["URLIP"] = function(a1,a2,a3,a4) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.URLIP.fm,a1,a2,a3,a4) end,
-    ["URL"] = function(a1,a2,a3) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.URL.fm,a1,a2,a3) end,
+    ["WWW"] = function(a1, a2, a3) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.WWW.fm, a1, a2, a3) end,
+    ["PROTOCOL"] = function(a1, a2) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.PROTOCOL.fm, a1, a2) end,
+    ["EMAIL"] = function(a1, a2, a3, a4) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.EMAIL.fm, a1, a2, a3, a4) end,
+    ["PORTIP"] = function(a1, a2, a3, a4, a5)
+      return pfUI.chat:FormatLink(pfUI.chat.URLPattern.PORTIP.fm, a1, a2, a3, a4,
+        a5)
+    end,
+    ["IP"] = function(a1, a2, a3, a4) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.IP.fm, a1, a2, a3, a4) end,
+    ["SHORTURL"] = function(a1, a2, a3) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.SHORTURL.fm, a1, a2, a3) end,
+    ["URLIP"] = function(a1, a2, a3, a4) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.URLIP.fm, a1, a2, a3, a4) end,
+    ["URL"] = function(a1, a2, a3) return pfUI.chat:FormatLink(pfUI.chat.URLPattern.URL.fm, a1, a2, a3) end,
   }
 
   -- url copy dialog
-  function pfUI.chat:FormatLink(formatter,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)
+  function pfUI.chat:FormatLink(formatter, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
     if not (formatter and a1) then return end
-    local newtext = string.format(formatter,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)
+    local newtext = string.format(formatter, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
 
     -- check the last capture index for consecutive trailing dots (invalid top level domain)
     local invalidtld
-    for _, arg in pairs({a10,a9,a8,a7,a6,a5,a4,a3,a2,a1}) do
+    for _, arg in pairs({ a10, a9, a8, a7, a6, a5, a4, a3, a2, a1 }) do
       if arg then
         invalidtld = string.find(arg, "(%.%.)$")
         break
@@ -154,11 +165,11 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
     if (invalidtld) then return newtext end
     if formatter == self.URLPattern.EMAIL.fm then -- email parser
-      local colon = string.find(a1,":")
+      local colon = string.find(a1, ":")
       if (colon) and string.len(a1) > colon then
-        if not (string.sub(a1,1,6) == "mailto") then
-          local prefix,address = string.sub(newtext,1,colon),string.sub(newtext,colon+1)
-          return string.format(" %s|cffccccff|Hurl:%s|h[%s]|h|r ",prefix,address,address)
+        if not (string.sub(a1, 1, 6) == "mailto") then
+          local prefix, address = string.sub(newtext, 1, colon), string.sub(newtext, colon + 1)
+          return string.format(" %s|cffccccff|Hurl:%s|h[%s]|h|r ", prefix, address, address)
         end
       end
     end
@@ -167,14 +178,14 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
   function pfUI.chat:HandleLink(text)
     local URLPattern = pfUI.chat.URLPattern
-    text = string.gsub (text, URLPattern.WWW.rx, pfUI.chat.URLFuncs.WWW)
-    text = string.gsub (text, URLPattern.PROTOCOL.rx, pfUI.chat.URLFuncs.PROTOCOL)
-    text = string.gsub (text, URLPattern.EMAIL.rx, pfUI.chat.URLFuncs.EMAIL)
-    text = string.gsub (text, URLPattern.PORTIP.rx, pfUI.chat.URLFuncs.PORTIP)
-    text = string.gsub (text, URLPattern.IP.rx, pfUI.chat.URLFuncs.IP)
-    text = string.gsub (text, URLPattern.SHORTURL.rx, pfUI.chat.URLFuncs.SHORTURL)
-    text = string.gsub (text, URLPattern.URLIP.rx, pfUI.chat.URLFuncs.URLIP)
-    text = string.gsub (text, URLPattern.URL.rx, pfUI.chat.URLFuncs.URL)
+    text = string.gsub(text, URLPattern.WWW.rx, pfUI.chat.URLFuncs.WWW)
+    text = string.gsub(text, URLPattern.PROTOCOL.rx, pfUI.chat.URLFuncs.PROTOCOL)
+    text = string.gsub(text, URLPattern.EMAIL.rx, pfUI.chat.URLFuncs.EMAIL)
+    text = string.gsub(text, URLPattern.PORTIP.rx, pfUI.chat.URLFuncs.PORTIP)
+    text = string.gsub(text, URLPattern.IP.rx, pfUI.chat.URLFuncs.IP)
+    text = string.gsub(text, URLPattern.SHORTURL.rx, pfUI.chat.URLFuncs.SHORTURL)
+    text = string.gsub(text, URLPattern.URLIP.rx, pfUI.chat.URLFuncs.URLIP)
+    text = string.gsub(text, URLPattern.URL.rx, pfUI.chat.URLFuncs.URL)
     return text
   end
 
@@ -189,11 +200,11 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   pfUI.chat.urlcopy:SetMovable(true)
   pfUI.chat.urlcopy:EnableMouse(true)
   pfUI.chat.urlcopy:RegisterForDrag("LeftButton")
-  pfUI.chat.urlcopy:SetScript("OnDragStart",function()
+  pfUI.chat.urlcopy:SetScript("OnDragStart", function()
     this:StartMoving()
   end)
 
-  pfUI.chat.urlcopy:SetScript("OnDragStop",function()
+  pfUI.chat.urlcopy:SetScript("OnDragStop", function()
     this:StopMovingOrSizing()
   end)
 
@@ -202,7 +213,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   end)
 
   pfUI.chat.urlcopy.text = CreateFrame("EditBox", "pfURLCopyEditBox", pfUI.chat.urlcopy)
-  pfUI.chat.urlcopy.text:SetTextColor(.2,1,.8,1)
+  pfUI.chat.urlcopy.text:SetTextColor(.2, 1, .8, 1)
   pfUI.chat.urlcopy.text:SetJustifyH("CENTER")
 
   pfUI.chat.urlcopy.text:SetWidth(250)
@@ -238,8 +249,8 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
   function _G.SetItemRef(link, text, button)
     if (strsub(link, 1, 3) == "url") then
-      if string.len(link) > 4 and string.sub(link,1,4) == "url:" then
-        pfUI.chat.urlcopy.CopyText(string.sub(link,5, string.len(link)))
+      if string.len(link) > 4 and string.sub(link, 1, 4) == "url:" then
+        pfUI.chat.urlcopy.CopyText(string.sub(link, 5, string.len(link)))
       end
       return
     end
@@ -250,7 +261,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   pfUI.chat.right:SetFrameStrata("BACKGROUND")
   pfUI.chat.right:SetWidth(C.chat.right.width)
   pfUI.chat.right:SetHeight(C.chat.right.height)
-  pfUI.chat.right:SetPoint("BOTTOMRIGHT", -2*default_border,2*default_border)
+  pfUI.chat.right:SetPoint("BOTTOMRIGHT", -2 * default_border, 2 * default_border)
   pfUI.chat.right:SetScript("OnShow", function() pfUI.chat:RefreshChat() end)
   UpdateMovable(pfUI.chat.right)
   CreateBackdrop(pfUI.chat.right, default_border, nil, .8)
@@ -268,7 +279,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
   pfUI.chat.right.panelTop = CreateFrame("Frame", "rightChatPanelTop", pfUI.chat.right)
   pfUI.chat.right.panelTop:ClearAllPoints()
-  pfUI.chat.right.panelTop:SetHeight(C.global.font_size+default_border*2)
+  pfUI.chat.right.panelTop:SetHeight(C.global.font_size + default_border * 2)
   pfUI.chat.right.panelTop:SetPoint("TOPLEFT", pfUI.chat.right, "TOPLEFT", default_border, -default_border)
   pfUI.chat.right.panelTop:SetPoint("TOPRIGHT", pfUI.chat.right, "TOPRIGHT", -default_border, -default_border)
   if C.chat.global.tabdock == "1" then
@@ -283,7 +294,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
       if IsShiftKeyDown() then
         this:ScrollToTop()
       else
-        for i=1, C.chat.global.scrollspeed do
+        for i = 1, C.chat.global.scrollspeed do
           this:ScrollUp()
         end
       end
@@ -291,7 +302,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
       if IsShiftKeyDown() then
         this:ScrollToBottom()
       else
-        for i=1, C.chat.global.scrollspeed do
+        for i = 1, C.chat.global.scrollspeed do
           this:ScrollDown()
         end
       end
@@ -299,7 +310,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   end
 
   function pfUI.chat:RefreshChat()
-    local panelheight = C.global.font_size*1.5 + default_border*2 + 2
+    local panelheight = C.global.font_size * 1.5 + default_border * 2 + 2
 
     if C.chat.global.sticky == "1" then
       ChatTypeInfo.WHISPER.sticky = 1
@@ -317,12 +328,12 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
     local combatlogpanel = (CombatLogQuickButtonFrame_Custom and CombatLogQuickButtonFrame_Custom:GetHeight() or 0)
 
-    for i=1, NUM_CHAT_WINDOWS do
-      local frame = _G["ChatFrame"..i]
-      local tab = _G["ChatFrame"..i.."Tab"]
+    for i = 1, NUM_CHAT_WINDOWS do
+      local frame = _G["ChatFrame" .. i]
+      local tab = _G["ChatFrame" .. i .. "Tab"]
 
       local combat = 0
-      for _, msg in pairs(_G["ChatFrame"..i].messageTypeList) do
+      for _, msg in pairs(_G["ChatFrame" .. i].messageTypeList) do
         if strfind(msg, "SPELL", 1) or strfind(msg, "COMBAT", 1) then
           combat = combat + 1
         end
@@ -361,26 +372,28 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
       if i == 3 and C.chat.right.enable == "1" then
         -- Loot & Spam
-        local bottompadding = pfUI.panel and pfUI.panel.right:IsShown() and not pfUI_config.position["pfPanelRight"] and panelheight or default_border
+        local bottompadding = pfUI.panel and pfUI.panel.right:IsShown() and not pfUI_config.position["pfPanelRight"] and
+            panelheight or default_border
         tab:SetParent(pfUI.chat.right.panelTop)
         frame:SetParent(pfUI.chat.right)
         frame:ClearAllPoints()
-        frame:SetPoint("TOPLEFT", pfUI.chat.right ,"TOPLEFT", default_border, -panelheight)
-        frame:SetPoint("BOTTOMRIGHT", pfUI.chat.right ,"BOTTOMRIGHT", -default_border, bottompadding)
+        frame:SetPoint("TOPLEFT", pfUI.chat.right, "TOPLEFT", default_border, -panelheight)
+        frame:SetPoint("BOTTOMRIGHT", pfUI.chat.right, "BOTTOMRIGHT", -default_border, bottompadding)
         frame:Show()
       elseif frame.isDocked then
         -- Left Chat
-        local bottompadding = pfUI.panel and pfUI.panel.left:IsShown() and not pfUI_config.position["pfPanelLeft"] and panelheight or default_border
+        local bottompadding = pfUI.panel and pfUI.panel.left:IsShown() and not pfUI_config.position["pfPanelLeft"] and
+            panelheight or default_border
         FCF_DockFrame(frame)
         tab:SetParent(pfUI.chat.left.panelTop)
         frame:SetParent(pfUI.chat.left)
         frame:ClearAllPoints()
         if i == 2 then
-          frame:SetPoint("TOPLEFT", pfUI.chat.left ,"TOPLEFT", default_border, -panelheight - combatlogpanel)
+          frame:SetPoint("TOPLEFT", pfUI.chat.left, "TOPLEFT", default_border, -panelheight - combatlogpanel)
         else
-          frame:SetPoint("TOPLEFT", pfUI.chat.left ,"TOPLEFT", default_border, -panelheight)
+          frame:SetPoint("TOPLEFT", pfUI.chat.left, "TOPLEFT", default_border, -panelheight)
         end
-        frame:SetPoint("BOTTOMRIGHT", pfUI.chat.left ,"BOTTOMRIGHT", -default_border, bottompadding)
+        frame:SetPoint("BOTTOMRIGHT", pfUI.chat.left, "BOTTOMRIGHT", -default_border, bottompadding)
       else
         FCF_UnDockFrame(frame)
         frame:SetParent(UIParent)
@@ -394,14 +407,14 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
       end
 
       -- hide textures
-      for j,v in ipairs({tab:GetRegions()}) do
-        if j==5 then v:SetTexture(0,0,0,0) end
-        v:SetHeight(C.global.font_size+default_border*2)
+      for j, v in ipairs({ tab:GetRegions() }) do
+        if j == 5 then v:SetTexture(0, 0, 0, 0) end
+        v:SetHeight(C.global.font_size + default_border * 2)
       end
 
       -- remove background on docked frames
       for _, tex in pairs(CHAT_FRAME_TEXTURES) do
-        local texture = _G["ChatFrame"..i..tex]
+        local texture = _G["ChatFrame" .. i .. tex]
         if tex == "Background" then
           texture.oldTexture = texture.oldTexture or texture:GetTexture()
           if frame:GetParent() == pfUI.chat.left or frame:GetParent() == pfUI.chat.right then
@@ -419,7 +432,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
       _G["ChatFrame" .. i .. "ResizeBottom"]:Hide()
       _G["ChatFrame" .. i .. "TabText"]:SetJustifyV("CENTER")
-      _G["ChatFrame" .. i .. "TabText"]:SetHeight(C.global.font_size+default_border*2)
+      _G["ChatFrame" .. i .. "TabText"]:SetHeight(C.global.font_size + default_border * 2)
       _G["ChatFrame" .. i .. "TabText"]:SetPoint("BOTTOM", 0, default_border)
       _G["ChatFrame" .. i .. "TabLeft"]:SetAlpha(0)
       _G["ChatFrame" .. i .. "TabMiddle"]:SetAlpha(0)
@@ -432,8 +445,9 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
       end
 
       local _, class = UnitClass("player")
-      _G["ChatFrame" .. i .. "TabText"]:SetTextColor((RAID_CLASS_COLORS[class].r + .3) * .5, (RAID_CLASS_COLORS[class].g + .3) * .5, (RAID_CLASS_COLORS[class].b + .3) * .5, 1)
-      _G["ChatFrame" .. i .. "TabText"]:SetFont(panelfont,panelfont_size, "OUTLINE")
+      _G["ChatFrame" .. i .. "TabText"]:SetTextColor((RAID_CLASS_COLORS[class].r + .3) * .5,
+        (RAID_CLASS_COLORS[class].g + .3) * .5, (RAID_CLASS_COLORS[class].b + .3) * .5, 1)
+      _G["ChatFrame" .. i .. "TabText"]:SetFont(panelfont, panelfont_size, "OUTLINE")
 
       if _G["ChatFrame" .. i].isDocked or _G["ChatFrame" .. i]:IsVisible() then
         _G["ChatFrame" .. i .. "Tab"]:Show()
@@ -455,7 +469,6 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   if C.chat.global.tabmouse == "1" then
     pfUI.chat.mouseovertab = CreateFrame("Frame")
     pfUI.chat.mouseovertab:SetScript("OnUpdate", function()
-
       if pfUI.chat.hideLock then return end
 
       if MouseIsOver(pfUI.chat.left, 10, -10, -10, 10) then
@@ -486,15 +499,15 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
   function pfUI.chat.SetupPositions()
     -- close all chat windows
-    for i=1, NUM_CHAT_WINDOWS do
-      FCF_Close(_G["ChatFrame"..i])
+    for i = 1, NUM_CHAT_WINDOWS do
+      FCF_Close(_G["ChatFrame" .. i])
       FCF_DockUpdate()
     end
 
     -- Main Window
     ChatFrame1:ClearAllPoints()
-    ChatFrame1:SetPoint("TOPLEFT", pfUI.chat.left ,"TOPLEFT", 5, -25)
-    ChatFrame1:SetPoint("BOTTOMRIGHT", pfUI.chat.left ,"BOTTOMRIGHT", -5, 25)
+    ChatFrame1:SetPoint("TOPLEFT", pfUI.chat.left, "TOPLEFT", 5, -25)
+    ChatFrame1:SetPoint("BOTTOMRIGHT", pfUI.chat.left, "BOTTOMRIGHT", -5, 25)
 
     FCF_SetLocked(ChatFrame1, 1)
     FCF_SetWindowName(ChatFrame1, GENERAL)
@@ -522,8 +535,8 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
       FCF_UnDockFrame(ChatFrame3)
       FCF_SetTabPosition(ChatFrame3, 0)
       ChatFrame3:ClearAllPoints()
-      ChatFrame3:SetPoint("TOPLEFT", pfUI.chat.right ,"TOPLEFT", 5, -25)
-      ChatFrame3:SetPoint("BOTTOMRIGHT", pfUI.chat.right ,"BOTTOMRIGHT", -5, 25)
+      ChatFrame3:SetPoint("TOPLEFT", pfUI.chat.right, "TOPLEFT", 5, -25)
+      ChatFrame3:SetPoint("BOTTOMRIGHT", pfUI.chat.right, "BOTTOMRIGHT", -5, 25)
       ChatFrame3:SetUserPlaced(1)
     end
 
@@ -540,8 +553,10 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     ChatFrame_RemoveAllChannels(ChatFrame2)
     ChatFrame_RemoveAllChannels(ChatFrame3)
 
-    local normalg = { "SYSTEM", "SAY", "YELL", "WHISPER", "PARTY", "GUILD", "GUILD_OFFICER", "CREATURE", "CHANNEL", "EMOTE", "RAID", "RAID_LEADER", "RAID_WARNING", "BATTLEGROUND", "BATTLEGROUND_LEADER", "MONSTER_SAY", "MONSTER_EMOTE", "MONSTER_YELL", "MONSTER_WHISPER", "MONSTER_BOSS_EMOTE", "MONSTER_BOSS_WHISPER" }
-    for _,group in pairs(normalg) do
+    local normalg = { "SYSTEM", "SAY", "YELL", "WHISPER", "PARTY", "GUILD", "GUILD_OFFICER", "CREATURE", "CHANNEL",
+      "EMOTE", "RAID", "RAID_LEADER", "RAID_WARNING", "BATTLEGROUND", "BATTLEGROUND_LEADER", "MONSTER_SAY",
+      "MONSTER_EMOTE", "MONSTER_YELL", "MONSTER_WHISPER", "MONSTER_BOSS_EMOTE", "MONSTER_BOSS_WHISPER" }
+    for _, group in pairs(normalg) do
       ChatFrame_AddMessageGroup(ChatFrame1, group)
     end
 
@@ -549,11 +564,11 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
 
     if C.chat.right.enable == "1" then
       local spamg = { "COMBAT_XP_GAIN", "COMBAT_HONOR_GAIN", "COMBAT_FACTION_CHANGE", "SKILL", "LOOT" }
-      for _,group in pairs(spamg) do
+      for _, group in pairs(spamg) do
         ChatFrame_AddMessageGroup(ChatFrame3, group)
       end
 
-      for _, chan in pairs({EnumerateServerChannels()}) do
+      for _, chan in pairs({ EnumerateServerChannels() }) do
         ChatFrame_AddChannel(ChatFrame3, chan)
         ChatFrame_RemoveChannel(ChatFrame1, chan)
       end
@@ -585,7 +600,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     end
   end
 
-  for i=1, NUM_CHAT_WINDOWS do
+  for i = 1, NUM_CHAT_WINDOWS do
     _G["ChatFrame" .. i .. "UpButton"]:Hide()
     _G["ChatFrame" .. i .. "UpButton"].Show = function() return end
     _G["ChatFrame" .. i .. "DownButton"]:Hide()
@@ -631,12 +646,12 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     end
 
     if C.chat.text.input_width ~= "0" then
-      pfUI.chat.editbox:SetPoint("BOTTOM", anchor, "TOP", 0, default_border*3)
+      pfUI.chat.editbox:SetPoint("BOTTOM", anchor, "TOP", 0, default_border * 3)
       pfUI.chat.editbox:SetWidth(C.chat.text.input_width)
     else
       pfUI.chat.editbox:SetWidth(anchor:GetWidth())
-      pfUI.chat.editbox:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, default_border*3)
-      pfUI.chat.editbox:SetPoint("BOTTOMRIGHT", anchor, "TOPRIGHT", 0, default_border*3)
+      pfUI.chat.editbox:SetPoint("BOTTOMLEFT", anchor, "TOPLEFT", 0, default_border * 3)
+      pfUI.chat.editbox:SetPoint("BOTTOMRIGHT", anchor, "TOPRIGHT", 0, default_border * 3)
     end
 
     UpdateMovable(pfUI.chat.editbox)
@@ -647,8 +662,8 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   ChatFrameEditBox:SetAllPoints(pfUI.chat.editbox)
   CreateBackdrop(ChatFrameEditBox, default_border)
 
-  for i,v in ipairs({ChatFrameEditBox:GetRegions()}) do
-    if i==6 or i==7 or i==8 then v:Hide() end
+  for i, v in ipairs({ ChatFrameEditBox:GetRegions() }) do
+    if i == 6 or i == 7 or i == 8 then v:Hide() end
     if v.SetFont then
       v:SetFont(pfUI.font_default, C.global.font_size + 1, "OUTLINE")
     end
@@ -656,7 +671,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   ChatFrameEditBox:SetAltArrowKeyMode(false)
 
   if C.chat.text.mouseover == "1" then
-    for i=1, NUM_CHAT_WINDOWS do
+    for i = 1, NUM_CHAT_WINDOWS do
       local frame = _G["ChatFrame" .. i]
       frame:SetScript("OnHyperlinkEnter", function()
         local _, _, linktype = string.find(arg1, "^(.-):(.+)$")
@@ -698,18 +713,25 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   _G.CHAT_BATTLEGROUND_GET = left .. "BG" .. right .. default
   _G.CHAT_BATTLEGROUND_LEADER_GET = left .. "BL" .. right .. default
   _G.CHAT_SAY_GET = left .. "S" .. right .. default
-  _G.CHAT_YELL_GET = left .. "Y" .. right ..default
+  _G.CHAT_YELL_GET = left .. "Y" .. right .. default
 
   if C.chat.global.whispermod == "1" then
     _G.CHAT_WHISPER_GET = wcol .. '[W]' .. default
     _G.CHAT_WHISPER_INFORM_GET = '[W]' .. default
   end
 
-  local r,g,b,a = strsplit(",", C.chat.text.timecolor)
-  local timecolorhex = rgbhex(r,g,b,a)
+  local r, g, b, a = strsplit(",", C.chat.text.timecolor)
+  local timecolorhex = rgbhex(r, g, b, a)
 
-  local r,g,b = strsplit(",", C.chat.text.unknowncolor)
-  local unknowncolorhex = rgbhex(r,g,b)
+  local r, g, b = strsplit(",", C.chat.text.unknowncolor)
+  local unknowncolorhex = rgbhex(r, g, b)
+
+  -- Function to get player level from pfUI_playerDB
+  local function GetPlayerLevel(name)
+    if not pfUI_playerDB then return nil end
+    if not pfUI_playerDB[name] then return nil end
+    return pfUI_playerDB[name].level
+  end
 
   local nothing = function() return end
   local original = FriendsFrame_OnEvent
@@ -733,7 +755,7 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     -- prepare and send the who query
     _G.FriendsFrame_OnEvent = nothing
     SetWhoToUI(1)
-    SendWho("n-"..name)
+    SendWho("n-" .. name)
   end
 
   local function AddMessage(frame, text, a1, a2, a3, a4, a5)
@@ -745,11 +767,13 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     end
 
     -- Remove prat CLINKs
-    text = gsub(text, "{CLINK:(%x+):([%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-):([^}]-)}", "|c%1|Hitem:%2|h[%3]|h|r") -- tbc
+    text = gsub(text, "{CLINK:(%x+):([%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-):([^}]-)}",
+      "|c%1|Hitem:%2|h[%3]|h|r")                                                                        -- tbc
     text = gsub(text, "{CLINK:(%x+):([%d-]-:[%d-]-:[%d-]-:[%d-]-):([^}]-)}", "|c%1|Hitem:%2|h[%3]|h|r") -- vanilla
 
     -- Remove chatter CLINKs
-    text = gsub(text, "{CLINK:item:(%x+):([%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-):([^}]-)}", "|c%1|Hitem:%2|h[%3]|h|r")
+    text = gsub(text, "{CLINK:item:(%x+):([%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-:[%d-]-):([^}]-)}",
+      "|c%1|Hitem:%2|h[%3]|h|r")
     text = gsub(text, "{CLINK:enchant:(%x+):([%d-]-):([^}]-)}", "|c%1|Henchant:%2|h[%3]|h|r")
     text = gsub(text, "{CLINK:spell:(%x+):([%d-]-):([^}]-)}", "|c%1|Hspell:%2|h[%3]|h|r")
     text = gsub(text, "{CLINK:quest:(%x+):([%d-]-):([%d-]-):([^}]-)}", "|c%1|Hquest:%2:%3|h[%4]|h|r")
@@ -777,8 +801,23 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
         end
 
         if C.chat.text.tintunknown == "1" or match then
-          text = string.gsub(text, "|Hplayer:"..name.."|h%["..real.."%]|h(.-:-)",
-            left..color.."|Hplayer:"..name.."|h" .. color .. real .. "|h|r"..right.."%1")
+          text = string.gsub(text, "|Hplayer:" .. name .. "|h%[" .. real .. "%]|h(.-:-)",
+            left .. color .. "|Hplayer:" .. name .. "|h" .. color .. real .. "|h|r" .. right .. "%1")
+        end
+      end
+    end
+
+    -- display player levels if available
+    if C.chat.text.playerlevel == "1" then
+      for name in gfind(text, "|Hplayer:(.-)|h") do
+        local real, _ = strsplit(":", name)
+        local level = GetPlayerLevel(real)
+
+        if level then
+          local levelcolor = rgbhex(GetDifficultyColor(level))
+          -- Add level after the player name, before the closing bracket
+          text = string.gsub(text, "(|Hplayer:" .. name .. "|h.-|h|r)" .. right,
+            "%1 " .. levelcolor .. level .. "|r" .. right)
         end
       end
     end
@@ -815,25 +854,25 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
     frame:HookAddMessage(text, a1, a2, a3, a4, a5)
   end
 
-  for i=1,NUM_CHAT_WINDOWS do
+  for i = 1, NUM_CHAT_WINDOWS do
     if C.chat.global.maxlines ~= "128" then
-      _G["ChatFrame"..i]:SetMaxLines(tonumber(C.chat.global.maxlines) or 128)
+      _G["ChatFrame" .. i]:SetMaxLines(tonumber(C.chat.global.maxlines) or 128)
     end
 
-    if not _G["ChatFrame"..i].HookAddMessage then
+    if not _G["ChatFrame" .. i].HookAddMessage then
       if C.chat.text.history == "1" then
         -- write history to chat
         local history = GetChatHistory(i)
-        for j=30,0,-1 do
+        for j = 30, 0, -1 do
           if history[j] then
-            _G["ChatFrame"..i]:AddMessage(history[j], .7,.7,.7)
+            _G["ChatFrame" .. i]:AddMessage(history[j], .7, .7, .7)
           end
         end
       end
 
       -- add chat parse and history hooks
-      _G["ChatFrame"..i].HookAddMessage = _G["ChatFrame"..i].AddMessage
-      _G["ChatFrame"..i].AddMessage = AddMessage
+      _G["ChatFrame" .. i].HookAddMessage = _G["ChatFrame" .. i].AddMessage
+      _G["ChatFrame" .. i].AddMessage = AddMessage
     end
   end
 
@@ -841,14 +880,14 @@ pfUI:RegisterModule("chat", "vanilla:tbc", function ()
   if C.chat.text.playerlinks == "1" then
     local pfHookSetItemRef = SetItemRef
     _G.SetItemRef = function(link, text, button)
-      if ( strsub(link, 1, 6) == "player" ) then
+      if (strsub(link, 1, 6) == "player") then
         local name = strsub(link, 8)
-        if ( name and (strlen(name) > 0) ) then
+        if (name and (strlen(name) > 0)) then
           local name, _ = strsplit(":", name)
           name = gsub(name, "([^%s]*)%s+([^%s]*)%s+([^%s]*)", "%3")
           name = gsub(name, "([^%s]*)%s+([^%s]*)", "%2")
           if IsShiftKeyDown() and ChatFrameEditBox:IsVisible() then
-            ChatFrameEditBox:Insert("|cffffffff|Hplayer:"..name.."|h["..name.."]|h|r")
+            ChatFrameEditBox:Insert("|cffffffff|Hplayer:" .. name .. "|h[" .. name .. "]|h|r")
             return
           end
         end
